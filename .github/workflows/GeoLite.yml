@@ -49,7 +49,11 @@ jobs:
         tag_name: ${{ env.TAG_NAME }}
         body: ${{ env.TAG_NAME }}
         files: upload/*.mmdb
-        run: mv GeoLite2-Country.mmdb GeoLite2.mmdb
+        
+        
+    - uses: actions/checkout@v2
+    - name: Rename file
+      run: mv GeoLite2-Country.mmdb upload/GeoLite2.mmdb
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.2.1
