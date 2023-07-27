@@ -42,13 +42,16 @@ jobs:
         git push -f origin download
 
     - name: Upload to Releases
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v0.1.15
       env:
         GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
       with:
         tag_name: ${{ env.TAG_NAME }}
         body: ${{ env.TAG_NAME }}
         files: upload/*.mmdb
+
+    - name: Rename file 
+        run: mv GeoLite2-Country.mmdb GeoLite2.mmdb
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.2.1
