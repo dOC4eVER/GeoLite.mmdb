@@ -25,9 +25,13 @@ jobs:
     - name: Download GeoLite.mmdb
       run: |
         wget -nv -O- "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=${{ secrets.LICENSE_KEY }}&suffix=tar.gz" | tar zxv
+        VERSION_FOLDER=$(find GeoLite* -maxdepth 0 -type d)  # Get the version folder name
+        VERSION=$(echo "$VERSION_FOLDER" | sed 's/.*_//')     # Extract the version from the folder name
+        EPOCH_DATE=$(date -d "$VERSION" +"%s")               # Convert version to Epoch date
         mkdir -p upload
         mv -v GeoLite*/*.mmdb GeoLite2.mmdb
         cp -v GeoLite2.mmdb upload
+        echo "{\"date\": \"$EPOCH_DATE\", \"version\": \"$VERSION\"}" > upload/GeoLite2_status.json
         echo "TAG_NAME=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
 
     - name: Push to "download" branch
