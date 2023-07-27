@@ -24,9 +24,9 @@ jobs:
     steps:
     - name: Download GeoLite.mmdb
       run: |
-        wget -nv -O- "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=${{ secrets.LICENSE_KEY }}&suffix=tar.gz" | tar zxv
+        wget -nv -O GeoLite2.mmdb "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=${{ secrets.LICENSE_KEY }}&suffix=tar.gz" | tar zxv
         mkdir -p upload
-        cp -v GeoLite*/*.mmdb upload
+        cp -v GeoLite2.mmdb upload
         echo "TAG_NAME=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
 
     - name: Push to "download" branch
@@ -50,11 +50,6 @@ jobs:
         body: ${{ env.TAG_NAME }}
         files: upload/*.mmdb
         
-        
-    - uses: actions/checkout@v2
-    - name: Rename file
-      run: mv GeoLite2-Country.mmdb upload/GeoLite2.mmdb
-
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.2.1
       with:
