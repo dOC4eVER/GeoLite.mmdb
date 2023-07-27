@@ -48,7 +48,7 @@ jobs:
       with:
         tag_name: ${{ env.TAG_NAME }}
         body: ${{ env.TAG_NAME }}
-        files: upload/GeoLite2.mmdb
+        files: upload/*.mmdb
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.2.1
